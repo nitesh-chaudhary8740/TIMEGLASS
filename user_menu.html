@@ -1,0 +1,66 @@
+<div class="main-content">
+    <div class="header-bar">
+        <h1>👥 User Management</h1>
+    </div>
+
+    <div class="section-box" style="margin-bottom: 30px;">
+        <h2>User Search & Quick Stats</h2>
+        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+            <input type="text" placeholder="Search by Name, Email, or Phone Number" style="flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <button style="padding: 10px 20px; background: #1a237e; color: white; border: none; border-radius: 4px; cursor: pointer;">Search</button>
+        </div>
+        <div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr); gap: 15px;">
+            <div class="kpi-card" style="border-left-color: #4CAF50;">
+                <div class="kpi-label">Total Registered Users</div>
+                <div class="kpi-value">12,450</div>
+            </div>
+            <div class="kpi-card" style="border-left-color: #FF9800;">
+                <div class="kpi-label">Users with 0 Bookings</div>
+                <div class="kpi-value">4,100</div>
+            </div>
+            <div class="kpi-card" style="border-left-color: #F44336;">
+                <div class="kpi-label">Banned/Suspended Users</div>
+                <div class="kpi-value">55</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-box">
+        <h2>Latest Registered Users</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">User Name</th>
+                    <th style="width: 25%;">Email / Phone</th>
+                    <th style="width: 15%;">Total Bookings</th>
+                    <th style="width: 15%;">Last Activity</th>
+                    <th style="width: 20%;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Priya K.</td>
+                    <td>p.k@email.com</td>
+                    <td>5</td>
+                    <td>2 hours ago</td>
+                    <td><button style="padding: 5px 10px;">View Profile</button></td>
+                </tr>
+                <tr>
+                    <td>Sanjay M.</td>
+                    <td>9876543210</td>
+                    <td>1</td>
+                    <td>1 day ago</td>
+                    <td><button style="padding: 5px 10px;">View Profile</button></td>
+                </tr>
+                <tr>
+                    <td>John D. (Suspended)</td>
+                    <td>j.d@email.com</td>
+                    <td class="urgent-status">12</td>
+                    <td>3 weeks ago</td>
+                    <td><button style="padding: 5px 10px; background: red; color: white;">Unban</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

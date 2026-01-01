@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+    .diagram-container { font-family: sans-serif; padding: 20px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; }
+    .system-boundary { border: 2px solid #333; padding: 30px; border-radius: 20px; background: white; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+    .use-case { border: 2px solid #1a237e; border-radius: 50px; padding: 10px 20px; width: 200px; text-align: center; font-size: 0.9em; background: #e8eaf6; }
+    .actor-box { display: flex; flex-direction: column; align-items: center; font-weight: bold; }
+    .actor-icon { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #333; display: flex; align-items: center; justify-content: center; margin-bottom: 5px; background: #eee; }
+    .layout-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+</style>
+
+<div class="diagram-container">
+    <h2 style="text-align:center;">Use Case Diagram: Service Marketplace</h2>
+    <div class="layout-row">
+        <div class="actor-box">
+            <div class="actor-icon">👤</div>
+            <span>Customer</span>
+        </div>
+
+        <div class="system-boundary">
+            <div style="font-weight:bold; margin-bottom:10px; color:#666;">Service System</div>
+            <div class="use-case">Search & Book Service</div>
+            <div class="use-case">Track Live Provider</div>
+            <div class="use-case">Pay & Rate Service</div>
+            <div class="use-case">Manage Job (Vendor)</div>
+            <div class="use-case">Resolve Dispute (Admin)</div>
+        </div>
+
+        <div class="actor-box">
+            <div class="actor-icon">🛠️</div>
+            <span>Provider / Admin</span>
+        </div>
+    </div>
+</div>
+<style>
+    .flow-step { border: 2px solid #333; padding: 10px; width: 180px; text-align: center; background: white; margin: 10px 0; }
+    .flow-decision { 
+        width: 80px; height: 80px; border: 2px solid #333; background: #fffde7;
+        transform: rotate(45deg); display: flex; align-items: center; justify-content: center; margin: 30px 0;
+    }
+    .decision-text { transform: rotate(-45deg); font-size: 0.8em; font-weight: bold; text-align: center; }
+    .arrow { font-size: 20px; color: #666; }
+</style>
+
+<div class="diagram-container" style="display: flex; flex-direction: column; align-items: center;">
+    <div class="flow-step" style="border-radius: 20px; background: #e8f5e9;">Start: Customer Request</div>
+    <div class="arrow">↓</div>
+    <div class="flow-step">System Filters Nearby Vendors</div>
+    <div class="arrow">↓</div>
+    <div class="flow-decision">
+        <div class="decision-text">Vendor<br>Accepts?</div>
+    </div>
+    <div style="display: flex; gap: 40px;">
+        <div style="text-align: center;">
+            <div style="font-size: 12px; font-weight: bold;">YES</div>
+            <div class="arrow">↓</div>
+            <div class="flow-step" style="border-color: green;">Confirm Booking</div>
+        </div>
+        <div style="text-align: center;">
+            <div style="font-size: 12px; font-weight: bold;">NO</div>
+            <div class="arrow">↓</div>
+            <div class="flow-step" style="border-color: red;">Try Next Best Vendor</div>
+        </div>
+    </div>
+</div>
+<style>
+    .seq-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center; position: relative; }
+    .lifeline { border-left: 2px dashed #ccc; height: 250px; margin: 0 auto; width: 2px; }
+    .msg-arrow { 
+        position: absolute; height: 2px; background: #1a237e; width: 33%; 
+        top: 80px; left: 16.5%; 
+    }
+    .msg-arrow::after { content: '▶'; position: absolute; right: 0; top: -8px; color: #1a237e; }
+    .msg-label { position: absolute; top: 60px; left: 20%; font-size: 0.7em; font-weight: bold; }
+</style>
+
+<div class="diagram-container">
+    <div class="seq-grid">
+        <div><strong>Admin (React)</strong></div>
+        <div><strong>API (Node)</strong></div>
+        <div><strong>DB (Mongo)</strong></div>
+        
+        <div class="lifeline"></div>
+        <div class="lifeline"></div>
+        <div class="lifeline"></div>
+
+        <div class="msg-label">POST /suspend-vendor</div>
+        <div class="msg-arrow"></div>
+        
+        <div style="position: absolute; top: 140px; left: 50%; width: 33%; height: 2px; border-top: 2px dashed #1a237e;">
+            <span style="position: absolute; left: 0; top: -9px;">◀</span>
+            <span style="position: absolute; top: -18px; left: 20%; font-size: 0.7em;">Status Updated</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

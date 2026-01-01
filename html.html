@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard Wireframe (Updated)</title>
+    <style>
+        /* Base Wireframe Styles */
+        body { font-family: sans-serif; margin: 0; background: #f0f0f0; }
+        .dashboard-layout { display: flex; min-height: 100vh; }
+        
+        /* Sidebar Navigation */
+        .sidebar { width: 250px; background: #1a237e; color: white; padding: 20px 0; }
+        .sidebar h3 { text-align: center; margin-bottom: 30px; font-size: 1.5em; }
+        .nav-item { padding: 12px 25px; border-left: 5px solid transparent; cursor: pointer; transition: background 0.2s; }
+        .nav-item:hover, .nav-item.active { background: #283593; border-left-color: #ffc107; }
+        
+        /* Main Content Area */
+        .main-content { flex-grow: 1; padding: 30px; }
+        .header-bar { border-bottom: 2px solid #ccc; padding-bottom: 15px; margin-bottom: 30px; }
+        .header-bar h1 { font-size: 2em; color: #1a237e; }
+        
+        /* Quick Links Bar (NEW) */
+        .quick-links { display: flex; gap: 15px; margin-bottom: 30px; padding: 10px; background: #e0e0e0; border-radius: 4px; }
+        .quick-links a { text-decoration: none; color: #1a237e; font-weight: bold; padding: 5px 10px; border: 1px solid transparent; border-radius: 3px; transition: background 0.2s; }
+        .quick-links a:hover { background: #ccc; }
+        
+        /* Key Performance Indicators (KPIs) */
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin-bottom: 40px; }
+        .kpi-card { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-left: 5px solid #ffc107; }
+        .kpi-label { font-size: 0.9em; color: #555; margin-bottom: 8px; text-transform: uppercase; }
+        .kpi-value { font-size: 2.2em; font-weight: bold; color: #333; }
+        .kpi-trend { font-size: 0.8em; margin-top: 5px; }
+
+        /* Main Sections */
+        .section-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        .section-box { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        .section-box h2 { font-size: 1.5em; border-bottom: 1px dashed #eee; padding-bottom: 10px; margin-bottom: 15px; color: #1a237e; }
+
+        /* Table Styles */
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+        .data-table th, .data-table td { border-bottom: 1px solid #eee; padding: 12px 0; text-align: left; }
+        .urgent-status { color: red; font-weight: bold; }
+        
+        /* Chart Placeholder */
+        .chart-placeholder { height: 250px; background: #f9f9f9; border: 1px solid #ccc; border-radius: 4px; text-align: center; line-height: 250px; color: #888; margin-top: 15px; }
+        
+    </style>
+</head>
+<body>
+
+<div class="dashboard-layout">
+    <div class="sidebar">
+        <h3>Admin Console</h3>
+        <div class="nav-item active">🏠 Dashboard Overview</div>
+        <div class="nav-item">📊 Analytics & Reporting</div>
+        <div class="nav-item">👥 User Management</div>
+        <div class="nav-item">🛠️ Vendor Management</div>
+        <div class="nav-item">💰 Financial & Payouts</div>
+        <div class="nav-item">💬 Support & Disputes</div>
+        <div class="nav-item">⚙️ Settings & Configuration</div>
+    </div>
+
+    <div class="main-content">
+        <div class="header-bar">
+            <h1>Marketplace Health & Operations</h1>
+        </div>
+        
+        <div class="quick-links">
+            <span>Jump to:</span>
+            <a href="#kpis">📊 Metrics</a>
+            <a href="#urgent-items">❗ Urgent Tasks</a>
+            <a href="#revenue-trend">📈 Revenue</a>
+            <a href="#vendor-quality">⭐ Vendor Quality</a>
+        </div>
+
+        <div class="kpi-grid" id="kpis">
+            <div class="kpi-card">
+                <div class="kpi-label">Gross Merchandise Value (GMV)</div>
+                <div class="kpi-value">₹ 450,900</div>
+                <div class="kpi-trend" style="color: green;">↑ 12% vs last month</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">New Bookings (24h)</div>
+                <div class="kpi-value">1,245</div>
+                <div class="kpi-trend" style="color: green;">↑ 5% vs yesterday</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Active Vendors</div>
+                <div class="kpi-value">489 / 512</div>
+                <div class="kpi-trend" style="color: #ff9800;">3 applications pending</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Total Commission</div>
+                <div class="kpi-value">₹ 67,635</div>
+                <div class="kpi-trend" style="color: green;">↑ 10% this week</div>
+            </div>
+        </div>
+
+        <div class="section-grid">
+            
+            <div class="section-box" id="revenue-trend">
+                <h2>Platform Revenue Trend (Last 90 Days)</h2>
+                <div class="chart-placeholder">Placeholder: Line Chart - GMV vs. Net Revenue</div>
+            </div>
+
+            <div class="section-box" id="urgent-items">
+                <h2>Urgent Attention Items</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 50%;">Item</th>
+                            <th style="width: 30%;">Count</th>
+                            <th style="width: 20%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Pending Payouts</td>
+                            <td class="urgent-status">18</td>
+                            <td>View</td>
+                        </tr>
+                        <tr>
+                            <td>Customer Disputes</td>
+                            <td class="urgent-status">4</td>
+                            <td>Resolve</td>
+                        </tr>
+                        <tr>
+                            <td>Vendor Applications</td>
+                            <td>3</td>
+                            <td>Review</td>
+                        </tr>
+                        <tr>
+                            <td>High-Risk Cancellation</td>
+                            <td>7</td>
+                            <td>Alert</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="section-box" id="vendor-quality">
+            <h2>Lowest Performing Vendors (Needs Intervention)</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">Vendor Name</th>
+                        <th style="width: 20%;">Average Rating</th>
+                        <th style="width: 20%;">Cancellation Rate</th>
+                        <th style="width: 20%;">Acceptance Rate</th>
+                        <th style="width: 15%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>A. Khan Plumbing</td>
+                        <td class="urgent-status">3.1 / 5.0</td>
+                        <td>15%</td>
+                        <td>78%</td>
+                        <td>Suspend/Warn</td>
+                    </tr>
+                    <tr>
+                        <td>XYZ Cleaning Crew</td>
+                        <td>4.0 / 5.0</td>
+                        <td class="urgent-status">10%</td>
+                        <td>90%</td>
+                        <td>Warn/Train</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+<div class="main-content">
+    <div class="header-bar">
+        <h1>👥 User Management</h1>
+    </div>
+
+    <div class="section-box" style="margin-bottom: 30px;">
+        <h2>User Search & Quick Stats</h2>
+        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+            <input type="text" placeholder="Search by Name, Email, or Phone Number" style="flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <button style="padding: 10px 20px; background: #1a237e; color: white; border: none; border-radius: 4px; cursor: pointer;">Search</button>
+        </div>
+        <div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr); gap: 15px;">
+            <div class="kpi-card" style="border-left-color: #4CAF50;">
+                <div class="kpi-label">Total Registered Users</div>
+                <div class="kpi-value">12,450</div>
+            </div>
+            <div class="kpi-card" style="border-left-color: #FF9800;">
+                <div class="kpi-label">Users with 0 Bookings</div>
+                <div class="kpi-value">4,100</div>
+            </div>
+            <div class="kpi-card" style="border-left-color: #F44336;">
+                <div class="kpi-label">Banned/Suspended Users</div>
+                <div class="kpi-value">55</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-box">
+        <h2>Latest Registered Users</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">User Name</th>
+                    <th style="width: 25%;">Email / Phone</th>
+                    <th style="width: 15%;">Total Bookings</th>
+                    <th style="width: 15%;">Last Activity</th>
+                    <th style="width: 20%;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Priya K.</td>
+                    <td>p.k@email.com</td>
+                    <td>5</td>
+                    <td>2 hours ago</td>
+                    <td><button style="padding: 5px 10px;">View Profile</button></td>
+                </tr>
+                <tr>
+                    <td>Sanjay M.</td>
+                    <td>9876543210</td>
+                    <td>1</td>
+                    <td>1 day ago</td>
+                    <td><button style="padding: 5px 10px;">View Profile</button></td>
+                </tr>
+                <tr>
+                    <td>John D. (Suspended)</td>
+                    <td>j.d@email.com</td>
+                    <td class="urgent-status">12</td>
+                    <td>3 weeks ago</td>
+                    <td><button style="padding: 5px 10px; background: red; color: white;">Unban</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div class="main-content">
+    <div class="header-bar">
+        <h1>🛠️ Vendor Management</h1>
+    </div>
+
+    <div class="section-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="section-box">
+            <h2>Vendor Applications</h2>
+            <p style="font-size: 0.9em;">New vendors awaiting review and approval.</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">Vendor Name</th>
+                        <th style="width: 30%;">Applied Service</th>
+                        <th style="width: 30%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Safe Movers Co.</td>
+                        <td>Packing & Moving</td>
+                        <td><button style="padding: 5px 10px; background: #FFC107;">Review Docs</button></td>
+                    </tr>
+                    <tr>
+                        <td>QuickFix Electric</td>
+                        <td>Electrical Repairs</td>
+                        <td><button style="padding: 5px 10px; background: #FFC107;">Review Docs</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="section-box">
+            <h2>Quality Control Report</h2>
+            <p style="font-size: 0.9em;">List of vendors with high churn or low ratings.</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">Vendor Name</th>
+                        <th style="width: 30%;">Avg. Rating</th>
+                        <th style="width: 30%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Plumber Joe</td>
+                        <td class="urgent-status">3.2 / 5.0</td>
+                        <td><button style="padding: 5px 10px; background: red; color: white;">Suspend</button></td>
+                    </tr>
+                    <tr>
+                        <td>Ace Salon</td>
+                        <td>3.9 / 5.0</td>
+                        <td><button style="padding: 5px 10px;">Send Warning</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="section-box">
+        <h2>Global Services & Pricing</h2>
+        <p style="font-size: 0.9em;">Manage the core list of services offered on the marketplace.</p>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 30%;">Service Category</th>
+                    <th style="width: 30%;">Default Price (Base)</th>
+                    <th style="width: 20%;">Active Vendors</th>
+                    <th style="width: 20%;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Standard AC Service</td>
+                    <td>₹ 750</td>
+                    <td>45</td>
+                    <td><button style="padding: 5px 10px;">Edit Price</button></td>
+                </tr>
+                <tr>
+                    <td>Sofa Shampooing</td>
+                    <td>₹ 1,500</td>
+                    <td>22</td>
+                    <td><button style="padding: 5px 10px;">Edit Price</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div class="main-content">
+    <div class="header-bar">
+        <h1>📊 Analytics & Reporting</h1>
+    </div>
+
+    <div class="section-box" style="margin-bottom: 30px;">
+        <h2>Date Range Filter</h2>
+        <div style="display: flex; gap: 15px;">
+            <input type="date" value="2025-10-01" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <input type="date" value="2025-12-16" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <select style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <option>Filter by Service Category</option>
+                <option>Cleaning</option>
+                <option>Plumbing</option>
+            </select>
+            <button style="padding: 10px 20px; background: #1a237e; color: white; border: none; border-radius: 4px;">Apply Filters</button>
+        </div>
+    </div>
+
+    <div class="section-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="section-box">
+            <h2>Booking Conversion Funnel</h2>
+            <div class="chart-placeholder" style="height: 280px;">Placeholder: Funnel Chart (Visits -> Search -> Service Detail -> Booking)</div>
+        </div>
+        <div class="section-box">
+            <h2>Geospatial Demand Heatmap</h2>
+            <div class="chart-placeholder" style="height: 280px;">Placeholder: Map showing high demand areas</div>
+        </div>
+    </div>
+
+    <div class="section-box">
+        <h2>Vendor Payout vs. Customer Ratings Trend</h2>
+        <div class="chart-placeholder" style="height: 250px;">Placeholder: Dual-Axis Chart (Verify Pay correlates with Quality)</div>
+    </div>
+
+</div>
+<div class="main-content">
+    <div class="header-bar">
+        <h1>💬 Support & Disputes</h1>
+    </div>
+
+    <div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px;">
+        <div class="kpi-card" style="border-left-color: #FFC107;">
+            <div class="kpi-label">Open Tickets</div>
+            <div class="kpi-value urgent-status">24</div>
+        </div>
+        <div class="kpi-card" style="border-left-color: #F44336;">
+            <div class="kpi-label">Disputes Under Investigation</div>
+            <div class="kpi-value">4</div>
+        </div>
+        <div class="kpi-card" style="border-left-color: #4CAF50;">
+            <div class="kpi-label">Average Resolution Time</div>
+            <div class="kpi-value">4.2 hours</div>
+        </div>
+    </div>
+
+    <div class="section-box">
+        <h2>Active Support Tickets</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Ticket ID</th>
+                    <th style="width: 40%;">Subject</th>
+                    <th style="width: 15%;">Priority</th>
+                    <th style="width: 15%;">Assigned To</th>
+                    <th style="width: 15%;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TICKET-0012</td>
+                    <td class="urgent-status">Vendor no-show (Booking #456)</td>
+                    <td>High</td>
+                    <td>Agent A</td>
+                    <td>View/Reply</td>
+                </tr>
+                <tr>
+                    <td>TICKET-0013</td>
+                    <td>Invoice question (Booking #457)</td>
+                    <td>Low</td>
+                    <td>Unassigned</td>
+                    <td>Assign</td>
+                </tr>
+                <tr>
+                    <td>TICKET-0014</td>
+                    <td>Dispute: Service quality not acceptable</td>
+                    <td>Medium</td>
+                    <td>Agent B</td>
+                    <td>View/Resolve</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div class="main-content">
+    <div class="header-bar">
+        <h1>⚙️ Settings & Configuration</h1>
+    </div>
+
+    <div class="section-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="section-box">
+            <h2>Global Financial Settings</h2>
+            <div style="padding-bottom: 15px; border-bottom: 1px solid #eee;">
+                <label for="commission">Platform Commission Rate:</label>
+                <input type="text" id="commission" value="15" style="padding: 8px; width: 100px; border: 1px solid #ccc; margin-left: 10px;"> %
+                <button style="padding: 8px 15px; background: #4CAF50; color: white; border: none; margin-left: 10px;">Update</button>
+            </div>
+            <div style="padding-top: 15px;">
+                <label for="payout-freq">Vendor Payout Frequency:</label>
+                <select id="payout-freq" style="padding: 8px; border: 1px solid #ccc; margin-left: 10px;">
+                    <option>Weekly</option>
+                    <option>Bi-Weekly</option>
+                    <option>Monthly</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="section-box">
+            <h2>Service Catalogue Management</h2>
+            <p style="font-size: 0.9em;">Manage main service categories and service region mapping.</p>
+            <button style="padding: 10px 15px; background: #1a237e; color: white; border: none; margin-top: 10px; margin-right: 10px;">Manage Categories</button>
+            <button style="padding: 10px 15px; background: #1a237e; color: white; border: none; margin-top: 10px;">Manage Service Areas</button>
+        </div>
+    </div>
+    
+    <div class="section-box">
+        <h2>Admin User Roles & Permissions</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 30%;">Admin User</th>
+                    <th style="width: 40%;">Role</th>
+                    <th style="width: 30%;">Permissions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mark R.</td>
+                    <td>Super Admin</td>
+                    <td>All Permissions</td>
+                </tr>
+                <tr>
+                    <td>Sarah L.</td>
+                    <td>Support Agent</td>
+                    <td>Support & User Mgt Only</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>
