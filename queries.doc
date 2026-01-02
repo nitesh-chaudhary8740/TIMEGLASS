@@ -1,0 +1,66 @@
+You are **very close**, but there is one small, important distinction between **Queries** and **Mutations** in RTK Query.
+
+RTK Query returns different things depending on whether you are **getting** data or **changing** data.
+
+---
+
+### 1. Mutations (Changing Data) — Returns an Array
+
+You are **correct** for **Mutations** (like `login`, `addProduct`, `deleteItem`). These return an array because you need a "trigger" function to start the action.
+
+```javascript
+// [triggerFunction, resultObject]
+const [login, { isLoading, isError, data }] = useAdminLoginMutation();
+
+```
+
+* **Index 0:** The function you call (e.g., `login({ email, password })`).
+* **Index 1:** An object containing the status of **that specific request**.
+
+---
+
+### 2. Queries (Getting Data) — Returns an Object
+
+For **Queries** (like `useGetInventoryQuery`), it does **not** return an array. It returns a single **object**. This is because Queries run automatically as soon as the component mounts.
+
+```javascript
+// { resultObject }
+const { data, isLoading, isError, error } = useGetInventoryQuery();
+
+```
+
+* There is no "trigger function" in the first position because the hook manages the fetching lifecycle for you.
+
+---
+
+### Comparison Table
+
+| Feature | Hook Type | Returns | Example Usage |
+| --- | --- | --- | --- |
+| **Mutation** | `useAdminLoginMutation` | **Array** `[fn, state]` | `const [add] = useAddMutation()` |
+| **Query** | `useGetInventoryQuery` | **Object** `{ state }` | `const { data } = useGetQuery()` |
+
+---
+
+### 3. Why the difference?
+
+* **Queries** are "Declarative." You are saying: "I want the inventory data to be here." The hook ensures it stays synced.
+* **Mutations** are "Imperative." You are saying: "Only do this action when I click this specific button." Therefore, it gives you the function to call manually.
+
+---
+
+### One Pro-Tip: The `.unwrap()`
+
+When you use a Mutation trigger, it returns a "thunk" (a promise). If you want to use a `try/catch` block in your component, you use `.unwrap()`:
+
+```javascript
+try {
+  const payload = await login(credentials).unwrap();
+  console.log('Success!', payload);
+} catch (error) {
+  console.error('Failed!', error);
+}
+
+```
+
+**Does the difference between the Array (Mutation) and the Object (Query) make sense now? Shall we try to build the User Cart logic using these hooks?**
