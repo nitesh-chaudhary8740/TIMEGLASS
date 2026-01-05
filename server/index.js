@@ -13,6 +13,9 @@ import userRouter from './src/routes/user.route.js';
 import errorHandler from './src/middlewares/errorHandler.middleware.js';
 import adminRouter from './src/routes/admin.route.js';
 import { corsOptions } from './src/config/app.config.js';
+import productRoutes from "./src/routes/product.route.js"
+
+// ... other middleware
 // Connect to Database
 connectDB();
 
@@ -29,6 +32,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 //routes
+app.use('/products', productRoutes);
 app.use('/user',userRouter)
 app.use('/admin',adminRouter)
 

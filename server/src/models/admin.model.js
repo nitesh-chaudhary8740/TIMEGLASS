@@ -1,19 +1,35 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const adminSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  
-  // Roles can help if you have "Super Admins" and "Support Staff"
-  role: { 
+  // Changed 'name' to 'username' to match your seed script
+  username: { 
     type: String, 
-    enum: ['superadmin', 'manager', 'support'], 
-    default: 'manager' 
+    required: [true, "Username is required"],
+    trim: true 
+  },
+  email: { 
+    type: String, 
+    required: [true, "Email is required"], 
+    unique: true,
+    lowercase: true, // Auto-converts to lowercase
+    trim: true
+  },
+  password: { 
+    type: String, 
+    required: [true, "Password is required"],
+    minlength: 6 
   },
   
-  // Tracking admin activity
+  // Updated enum to match your 'SUPER_ADMIN' usage in the seed script
+  role: { 
+    type: String, 
+    enum: ['SUPER_ADMIN', 'MANAGER', 'SUPPORT'], 
+    default: 'MANAGER' 
+  },
+  
   lastLogin: { type: Date },
+  
+  // Fine-grained control for the TIMEGLASS dashboard
   permissions: {
     canEditProducts: { type: Boolean, default: true },
     canDeleteUsers: { type: Boolean, default: false },
@@ -21,4 +37,8 @@ const adminSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Admin', adminSchema);
+// Indexing email for faster login lookups
+adminSchema.index({ email: 1 });
+
+const Admin = mongoose.model('Admin', adminSchema);
+export default Admin;
