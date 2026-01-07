@@ -33,3 +33,22 @@ export const getPublishedProducts = asyncHandler(async (req, res) => {
         products
     });
 });
+// @desc    Get single product details
+// @route   GET /api/products/:id
+// @access  Public
+export const getProductById = asyncHandler(async (req, res) => {
+  // 1. Find product by ID from URL params
+  const product = await Product.findById(req.params.id);
+
+  // 2. If product exists, return it
+  if (product) {
+    res.status(200).json({
+      success: true,
+      product
+    });
+  } else {
+    // 3. If not found, throw a 404 error
+    res.status(404);
+    throw new Error('Product not found');
+  }
+});

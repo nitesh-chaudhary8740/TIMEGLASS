@@ -13,6 +13,16 @@ const addressSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
   name: { type: String, trim: true, default: "" },
   email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+  phone: {
+        type: String,
+        trim: true,
+        // Validation for exactly 10 digits (Standard Indian format)
+        // Adjust regex if you plan to go international
+        match: [/^[6-9]\d{9}$/, 'Please provide a valid 10-digit mobile number'],
+        minLength: [10, 'Phone number must be at least 10 digits'],
+        // Note: unique: true might be tricky if users share numbers, 
+        // but generally recommended for integrity.
+    },
   role: { type: String, enum: ['customer', 'admin'], default: 'customer' },
   
   // --- AUTHENTICATION ---

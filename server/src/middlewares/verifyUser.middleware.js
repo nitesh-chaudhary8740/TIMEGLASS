@@ -12,6 +12,7 @@ export const verifyUser = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, env.JWT_ACCESS_SECRET);
+        
         req.user = decoded; // Contains id and role
         next();
     } catch (error) {

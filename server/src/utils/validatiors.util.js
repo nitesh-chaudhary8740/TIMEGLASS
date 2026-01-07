@@ -45,13 +45,14 @@ export const validators = {
      * 2. Removes any leading or trailing whitespace (`.trim()`).
      */
     noExtraSpaces: (str) => str.replace(/\s{2,}/g, " ").trim(),
+    titleCaseName:(str)=> str.toLowerCase().replace( /\b\w/g,(char)=>char.toUpperCase())
 };
-const name = "jOhn dOe smith-jones";
+// const name = "jOhn dOe smith-jones";
 
-const titleCaseName = name.toLowerCase().replace(
-    /\b\w/g, // Find the first word character (\w) at a word boundary (\b) globally (g)
-    (char) => char.toUpperCase() // Replace the matched character with its uppercase version
-);
+// const titleCaseName = name.toLowerCase().replace(
+//     /\b\w/g, // Find the first word character (\w) at a word boundary (\b) globally (g)
+//     (char) => char.toUpperCase() // Replace the matched character with its uppercase version
+// );
 
 
 

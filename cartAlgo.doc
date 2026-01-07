@@ -1,0 +1,9 @@
+if(existingIndex>-1){
+     //if existing item(in actual database user cart) qty is less or equal to guestItem qty(which is same product) 
+     // then let the qty as it is
+     //of if guestItem's(same matched item from database) qty is greater then in database cart, 
+     // then replace the qty of that particular product in, existing proudct.qty=guestItem.qty
+     // and limit is 10(changeble/scalable) for now , if guest item or db cartItem is already have 10 qty then there will be no any qty assignment,
+
+     //and if productExist but doesn't is in the user database cart then push it with the guest qty
+    }
