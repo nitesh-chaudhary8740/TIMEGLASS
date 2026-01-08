@@ -43,8 +43,18 @@ const orderSchema = new mongoose.Schema({
     method: { type: String, enum: ['Prepaid', 'COD'], default: 'Prepaid' }
   },
 
-  deliveredAt: Date,
-  shippedAt: Date
+  shippedAt: Date,
+ deliveryOTP: { 
+    type: String, 
+    default: null // Explicitly null for old orders
+  },
+  otpExpires: { 
+    type: Date, 
+    default: null 
+  },
+  deliveredAt: { 
+    type: Date 
+  }
 
 }, { timestamps: true });
 

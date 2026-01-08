@@ -14,6 +14,7 @@ import errorHandler from './src/middlewares/errorHandler.middleware.js';
 import adminRouter from './src/routes/admin.route.js';
 import { corsOptions } from './src/config/app.config.js';
 import productRoutes from "./src/routes/product.route.js"
+import ticketRouter from './src/routes/ticket.route.js';
 
 // ... other middleware
 // Connect to Database
@@ -35,6 +36,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/products', productRoutes);
 app.use('/user',userRouter)
 app.use('/admin',adminRouter)
+app.use('/tickets',ticketRouter)
 
 app.use(errorHandler)
 const PORT = process.env.PORT || 5000;

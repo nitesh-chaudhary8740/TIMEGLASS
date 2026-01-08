@@ -62,4 +62,5 @@ userRouter.post('/payment/razorpay-order', verifyUser, createRazorpayOrder);
 userRouter.route("/order").post(verifyUser,createNewOrder)
 userRouter.route("/order/my").get(verifyUser,getMyOrders)
 userRouter.get("/order/:id", verifyUser, getOrderById);
+
 export default userRouter;

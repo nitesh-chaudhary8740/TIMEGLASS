@@ -6,9 +6,12 @@ import { validators } from "../utils/validatiors.util.js";
 import ErrorResponse from "../utils/errorResponse.util.js";
 import Admin from "../models/admin.model.js";
 import { deleteFromCloudinary } from "../utils/cloudinary.util.js";
+import Transaction from "../models/transaction.model.js";
+import Order from "../models/order.model.js";
+import User from "../models/user.model.js";
 
 export const adminLogin = async (req, res) => {
-  console.log("req received");
+
   const { email, password } = req.body;
   // 1. Basic Validation
   if (!validators.email(email) || !password) {
@@ -34,7 +37,7 @@ export const adminLogin = async (req, res) => {
   const token = await generateAccessToken(admin._id);
 
   // Set cookie options
-  console.log(admin);
+ 
   const cookieOptions = {
     httpOnly: true, // Prevents JS access (XSS protection)
     secure: process.env.NODE_ENV === "production", // Only over HTTPS in prod
@@ -223,5 +226,39 @@ export const toggleProductStatus = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+};
+
+
+
+
+export const getDashboardStats = async (req, res) => {
+  try {
+    // 1. Calculate Total Revenue from Completed Transactions
+    const revenueData = await Transaction.aggregate([
+      { $match: { paymentStatus: 'Completed' } },
+      { $group: { _id: null, totalRevenue: { $sum: "$amount" } } }
+    ]);
+
+    // 2. Count Total Orders
+    const totalOrders = await Order.countDocuments();
+
+    // 3. Count Registered Users
+    const totalUsers = await User.countDocuments();
+
+    // 4. Get Recent Disputes (assuming you have a Dispute model or field)
+    // const recentDisputes = await Dispute.find().sort({ createdAt: -1 }).limit(5);
+
+    res.status(200).json({
+      success: true,
+      stats: {
+        totalRevenue: revenueData.length > 0 ? revenueData[0].totalRevenue : 0,
+        totalOrders,
+        activeUsers: totalUsers,
+        growth: "+12.5%" // You can hardcode or calculate MoM growth
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching dashboard data", error });
   }
 };

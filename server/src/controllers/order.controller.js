@@ -95,7 +95,7 @@ export const createNewOrder = asyncHandler(async (req, res) => {
     });
 
     // 6. CLEAR THE USER'S CART IN DB
-    await User.findByIdAndUpdate(req.user.id, { $set: { cart: [] } });
+    await User.findByIdAndUpdate(req.user.id, { $set: { cart: [] },$push: { orderHistory: order._id } });
 
     // 7. SUCCESS RESPONSE
     res.status(201).json({
@@ -126,11 +126,21 @@ export const getOrderById = asyncHandler(async (req, res) => {
     });
 });
 export const getMyOrders = asyncHandler(async (req, res) => {
-    // Find all orders where user matches req.user.id
-    const orders = await Order.find({ user: req.user.id }).sort("-createdAt");
+ 
+    const user = await User.findById(req.user.id).populate({
+        path: 'orderHistory',
+        options: { sort: { 'createdAt': -1 } } // Keep most recent orders at the top
+    });
 
+    if (!user) {
+        res.status(404);
+        throw new Error("User not found");
+    }
+
+    // 3. Return the populated array
     res.status(200).json({
         success: true,
-        orders,
+        count: user.orderHistory.length,
+        orders: user.orderHistory,
     });
 });
