@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import http from "http"
 
 // Load environment variables
 dotenv.config();
@@ -15,6 +16,7 @@ import adminRouter from './src/routes/admin.route.js';
 import { corsOptions } from './src/config/app.config.js';
 import productRoutes from "./src/routes/product.route.js"
 import ticketRouter from './src/routes/ticket.route.js';
+import { initSocket } from './socket.js';
 
 // ... other middleware
 // Connect to Database
@@ -32,6 +34,11 @@ app.use(express.urlencoded({extended:true}))
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+//socket 
+const server = http.createServer(app);
+
+// Initialize Socket.io
+initSocket(server, corsOptions);
 //routes
 app.use('/products', productRoutes);
 app.use('/user',userRouter)
@@ -39,5 +46,5 @@ app.use('/admin',adminRouter)
 app.use('/tickets',ticketRouter)
 
 app.use(errorHandler)
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+const PORT = process.env.PORT || 8081;
+server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

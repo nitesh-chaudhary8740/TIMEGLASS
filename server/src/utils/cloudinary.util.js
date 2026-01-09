@@ -46,3 +46,38 @@ export const deleteFromCloudinary = async (publicId) => {
     throw new Error("Failed to delete image from cloud storage");
   }
 };
+/**
+ * Uploads a ticket attachment buffer to Cloudinary
+ * @param {Buffer} fileBuffer - The file buffer from Multer
+ * @param {string} ticketId - The ID of the ticket for folder organization
+ * @returns {Promise} - Resolves with { url, public_id }
+ */
+export const uploadTicketData = (fileBuffer, ticketId) => {
+  return new Promise((resolve, reject) => {
+    // Safety check for empty buffers
+    if (!fileBuffer) {
+      return reject(new Error("No file buffer provided"));
+    }
+
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { 
+        // Logic: Store in a specific tickets folder, then a subfolder for the ID
+        folder: `timeglass/tickets/${ticketId}`, 
+        resource_type: 'auto' 
+      },
+      (error, result) => {
+        if (error) {
+          console.error("Cloudinary Ticket Upload Error:", error);
+          return reject(error);
+        }
+        resolve({
+          url: result.secure_url,
+          public_id: result.public_id,
+        });
+      }
+    );
+
+    // Stream the buffer to Cloudinary
+    uploadStream.end(fileBuffer);
+  });
+};
