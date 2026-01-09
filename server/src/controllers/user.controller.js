@@ -40,7 +40,7 @@ console.log(req.body)
 
   // 3. Find user or create a new one if they don't exist
   let user = await User.findOne({ email });
-  console.log("4")
+
   if (!user) {
     user = await User.create({ email });
   }
@@ -51,10 +51,10 @@ console.log(req.body)
     expiresAt: expiryTime
   };
   await user.save({validateBeforeSave:false});
-
+console.log(email)
   // 5. Send the email (handled by SendGrid utility)
   await sendOTP(email, otpCode);
-console.log("4")
+
   res.status(200).json({ 
     success: true, 
     message: 'Verification code sent to your email' 

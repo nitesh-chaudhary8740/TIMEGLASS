@@ -37,10 +37,17 @@ const orderSchema = new mongoose.Schema({
     default: 'Processing' 
   },
 
+paymentStatus: { 
+    type: String, 
+    enum: ['Pending', 'Paid', 'Failed'], 
+    default: 'Pending' 
+  },
+
   paymentInfo: {
-    id: { type: String }, // Transaction ID from Razorpay/Stripe
-    status: { type: String }, // 'succeeded', 'pending', 'failed'
-    method: { type: String, enum: ['Prepaid', 'COD'], default: 'Prepaid' }
+    id: { type: String }, // Maps to razorpayPaymentId
+    status: { type: String }, // 'succeeded' or 'Completed'
+    method: { type: String, enum: ['Prepaid', 'COD'], default: 'Prepaid' },
+    razorpayOrderId: { type: String }
   },
 
   shippedAt: Date,

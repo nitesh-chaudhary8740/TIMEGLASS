@@ -26,6 +26,7 @@ import asyncHandler from '../utils/asynchandler.util.js';
 import { addAddress, deleteAddress, updateAddress } from '../controllers/address.controller.js';
 import { createNewOrder, getMyOrders, getOrderById } from '../controllers/order.controller.js';
 import { createRazorpayOrder } from '../controllers/payment.controller.js';
+import { getWishlist, toggleWishlist } from '../controllers/wishlist.controller.js';
 
 const userRouter = express.Router();
 
@@ -62,5 +63,10 @@ userRouter.post('/payment/razorpay-order', verifyUser, createRazorpayOrder);
 userRouter.route("/order").post(verifyUser,createNewOrder)
 userRouter.route("/order/my").get(verifyUser,getMyOrders)
 userRouter.get("/order/:id", verifyUser, getOrderById);
+//wishlist
 
+
+userRouter.route("/wishlist")
+    .get(verifyUser,asyncHandler(getWishlist))
+    .post(verifyUser,asyncHandler(toggleWishlist)); // Using one POST route for toggling is cleaner for the frontend
 export default userRouter;

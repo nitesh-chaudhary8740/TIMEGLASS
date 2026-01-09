@@ -23,7 +23,8 @@ const sendOTP = async (to, otp) => {
   };
 
   try {
-    await sgMail.send(msg);
+  const instance=  await sgMail.send(msg);
+    console.log(instance)
     return true;
   } catch (error) {
     console.error('SendGrid Error:', error.response?.body || error.message);
