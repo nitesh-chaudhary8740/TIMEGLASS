@@ -81,6 +81,7 @@ export const adminProfile = (req, res) => {
  * @access  Private/Admin
  */
 export const addProduct = async (req, res, next) => {
+  console.log("here")
   try {
     const {
       name, price, description, tier, gender, movement,
@@ -93,7 +94,7 @@ export const addProduct = async (req, res, next) => {
 
     const cloudinaryResults = await Promise.all(files.map(file => uploadToCloudinary(file.buffer, name)));
     const imagesData = cloudinaryResults.map(r => ({ url: r.url, public_id: r.public_id }));
-
+    
     const product = new Product({
       name,
       description,
@@ -112,10 +113,10 @@ export const addProduct = async (req, res, next) => {
       images: imagesData,
       defaultImage: imagesData[0], // Simplified default for now
     });
-
     await product.save();
     res.status(201).json({ success: true, message: "Timepiece added" });
   } catch (error) {
+    console.log(error)
     next(error);
   }
 };

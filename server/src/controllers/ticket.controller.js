@@ -9,7 +9,7 @@ import { getIO } from '../../socket.js'; // Import your socket helper
 // 1. CREATE TICKET
 export const createTicket = asyncHandler(async (req, res, next) => {
     // Change 'message' to 'content' here!
-    const { order, subject, content } = req.body; 
+    const { order, subject, message } = req.body; 
 
     // ... upload logic ...
 
@@ -20,8 +20,8 @@ export const createTicket = asyncHandler(async (req, res, next) => {
         messages: [{
             sender: req.user.id,
             senderRole: 'user',
-            content: content || (initialAttachments.length > 0 ? "Sent an attachment" : ""),
-            attachments: initialAttachments
+            content: message,
+           
         }]
     });
 
