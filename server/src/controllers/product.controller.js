@@ -147,7 +147,7 @@ export const createProductReview = asyncHandler(async (req, res) => {
         user: req.user.id,
         'items.product': productId,
         // We allow 'Shipped' OR 'Delivered' so you can test right now
-        orderStatus: { $in: ['Shipped', 'Delivered'] }, 
+        'items.product.status': { $nin: ['Shipped', 'Processing'] }, 
         // We check if it's Prepaid or marked as Paid
         $or: [
             { paymentStatus: 'Paid' },
