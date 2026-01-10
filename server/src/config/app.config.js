@@ -4,7 +4,7 @@ dotenv.config();
 //src/config/app.config.js
 // 1. CORS Options (Crucial for Cookies)
 export const corsOptions = {
-    origin: ['http://localhost:5173', 'http://localhost:5174','http://127.0.0.1:5173'], // Add all frontend URLs
+    origin: ['http://localhost:5173', 'http://localhost:5174','http://127.0.0.1:5173',"https://timeglass.vercel.app"], // Add all frontend URLs
     credentials: true, // Required for cookies to pass through
     methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
