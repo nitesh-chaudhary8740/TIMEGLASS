@@ -9,6 +9,7 @@ import Order from '../models/order.model.js';
 import Transaction from '../models/transaction.model.js';
 import User from '../models/user.model.js';
 import Return from "../models/return.model.js"
+import sendOrderConfirmation from '../utils/sendOrderConfirmationEmail.util.js';
 export const createNewOrder = asyncHandler(async (req, res) => {
     const { recipient, shippingAddress, items, paymentInfo } = req.body;
 
@@ -96,7 +97,8 @@ export const createNewOrder = asyncHandler(async (req, res) => {
 
     // 6. CLEAR THE USER'S CART IN DB
     await User.findByIdAndUpdate(req.user.id, { $set: { cart: [] },$push: { orderHistory: order._id } });
-
+const userEmail =  recipient.email||req.user.email; 
+sendOrderConfirmation(order, userEmail);
     // 7. SUCCESS RESPONSE
     res.status(201).json({
         success: true,

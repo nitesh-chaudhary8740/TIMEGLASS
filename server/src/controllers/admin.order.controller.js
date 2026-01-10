@@ -122,22 +122,36 @@ export const confirmDelivery = async (req, res) => {
 export const initiateReturnPickup = async (req, res) => {
   try {
     const { orderId, productId } = req.params;
+
+    // 1. Find Return Record
     const returnReq = await Return.findOne({ orderId, productId }).populate('user', 'name email');
-    
     if (!returnReq) return res.status(404).json({ message: "Return record not found" });
 
-    // Generate 6-digit OTP
+    // 2. Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    
-    // Update Return Document (Schema now includes these fields)
+    const expiry = Date.now() + 3600000; // 1 Hour
+
+    // 3. Update Return Document
     returnReq.returnOTP = otp;
-    returnReq.otpExpires = Date.now() + 3600000; // 1 Hour expiry
+    returnReq.otpExpires = expiry;
     returnReq.returnStatus = 'Pickup_Scheduled';
     await returnReq.save();
 
+    // 4. Update Order Document (Item Level)
+    // Using array filters to update the specific product inside the items array
+    await Order.findOneAndUpdate(
+      { _id: orderId, "items.product": productId },
+      { 
+        $set: { 
+          "items.$.itemOTP": otp,
+          "items.$.itemOtpExpires": expiry
+        }
+      }
+    );
+
     await sendReturnOTP(returnReq.user.email, otp, orderId, returnReq.user.name);
     
-    res.status(200).json({ success: true, message: "Return OTP sent to customer." });
+    res.status(200).json({ success: true, message: "Return OTP generated and synced." });
   } catch (error) {
     res.status(500).json({ message: "Return initiation failed", error: error.message });
   }
