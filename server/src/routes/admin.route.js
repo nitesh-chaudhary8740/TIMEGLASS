@@ -3,7 +3,7 @@ import asyncHandler from "../utils/asynchandler.util.js"
 import { addProduct, adminLogin, adminLogout, adminProfile, deleteProduct, getDashboardStats, getProductDetails, getProducts, toggleProductStatus, updateProduct,  } from "../controllers/admin.controller.js"
 import { verifyAdmin } from "../middlewares/verifyAdmin.middleware.js"
 import { upload } from "../middlewares/multer.middleware.js"
-import { confirmDelivery, getAllOrders, getAllTransactions, getOrderDetails, initiateDelivery, rollbackDeliveryInitiation, updateOrderStatus } from "../controllers/admin.order.controller.js"
+import {getOrderDetails,rollbackDeliveryInitiation,cancelOrder,verifyReturnPickup,initiateReturnPickup,confirmDelivery,initiateDelivery,updateItemStatus,getAllOrders,getAllTransactions} from "../controllers/admin.order.controller.js"
 import { getAllUsers, getUserDetails } from "../controllers/admin.csm.controller.js"
 
 const adminRouter = express.Router()
@@ -24,15 +24,34 @@ adminRouter.route("/products/:id")
 adminRouter.route("/products/:id/status")
     .patch(verifyAdmin, asyncHandler(toggleProductStatus));
 
-//orders
-adminRouter.route('/orders').get(verifyAdmin,asyncHandler(getAllOrders))
-adminRouter.route('/order/:id').put(verifyAdmin,asyncHandler(updateOrderStatus))
-adminRouter.route('/order/:id').get(verifyAdmin,asyncHandler(getOrderDetails))
-adminRouter.route('/order/:id/send-otp').post(verifyAdmin,asyncHandler(initiateDelivery))
-adminRouter.route('/order/:id/verify-otp').put(verifyAdmin,asyncHandler(confirmDelivery))
-adminRouter.route('/order/:id/rollback-delivery').put(verifyAdmin,asyncHandler(rollbackDeliveryInitiation))
-adminRouter.route('/transactions').get(verifyAdmin,asyncHandler(getAllTransactions))
 
+
+// ... keep previous routes (login, profile, stats, products) ...
+
+// --- Orders Management ---
+adminRouter.route('/orders').get(verifyAdmin, asyncHandler(getAllOrders))
+adminRouter.route('/order/:id').get(verifyAdmin, asyncHandler(getOrderDetails))
+
+// Item-Level Control (The "Dispatch" engine)
+adminRouter.route('/order/:orderId/item/:productId')
+    .put(verifyAdmin, asyncHandler(updateItemStatus))
+
+// Security Handover (Outbound - Delivery)
+adminRouter.route('/order/:id/send-otp').post(verifyAdmin, asyncHandler(initiateDelivery))
+adminRouter.route('/order/:id/verify-otp').put(verifyAdmin, asyncHandler(confirmDelivery))
+adminRouter.route('/order/:id/rollback-delivery').put(verifyAdmin, asyncHandler(rollbackDeliveryInitiation))
+
+// Security Handover (Inbound - Returns)
+adminRouter.route('/order/:orderId/item/:productId/send-return-otp')
+    .post(verifyAdmin, asyncHandler(initiateReturnPickup))
+adminRouter.route('/order/:orderId/item/:productId/verify-return-otp')
+    .put(verifyAdmin, asyncHandler(verifyReturnPickup))
+
+// Cancellations & Transactions
+adminRouter.route('/order/:id/cancel').put(verifyAdmin, asyncHandler(cancelOrder))
+adminRouter.route('/transactions').get(verifyAdmin, asyncHandler(getAllTransactions))
+
+// ... keep user routes ...
 //user 
 adminRouter.route('/users').get(verifyAdmin,asyncHandler(getAllUsers))
 adminRouter.route('/user/:id').get(verifyAdmin,asyncHandler(getUserDetails))

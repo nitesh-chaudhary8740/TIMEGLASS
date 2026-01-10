@@ -24,7 +24,7 @@ import {
 import { verifyUser } from '../middlewares/verifyUser.middleware.js';
 import asyncHandler from '../utils/asynchandler.util.js';
 import { addAddress, deleteAddress, updateAddress } from '../controllers/address.controller.js';
-import { createNewOrder, getMyOrders, getOrderById } from '../controllers/order.controller.js';
+import { cancelOrderItem, createNewOrder, getMyOrders, getOrderById, requestItemReturn } from '../controllers/order.controller.js';
 import { createRazorpayOrder } from '../controllers/payment.controller.js';
 import { getWishlist, toggleWishlist } from '../controllers/wishlist.controller.js';
 
@@ -63,6 +63,10 @@ userRouter.post('/payment/razorpay-order', verifyUser, createRazorpayOrder);
 userRouter.route("/order").post(verifyUser,createNewOrder)
 userRouter.route("/order/my").get(verifyUser,getMyOrders)
 userRouter.get("/order/:id", verifyUser, getOrderById);
+userRouter.put("/order/:orderId/item/:productId/cancel", verifyUser, cancelOrderItem);
+
+// Request a return for a delivered item
+userRouter.post("/order/:orderId/item/:productId/return", verifyUser, requestItemReturn);
 //wishlist
 
 

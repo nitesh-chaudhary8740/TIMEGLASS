@@ -8,7 +8,7 @@ import Product from '../models/product.model.js';
 import Order from '../models/order.model.js';
 import Transaction from '../models/transaction.model.js';
 import User from '../models/user.model.js';
-
+import Return from "../models/return.model.js"
 export const createNewOrder = asyncHandler(async (req, res) => {
     const { recipient, shippingAddress, items, paymentInfo } = req.body;
 
@@ -48,7 +48,7 @@ export const createNewOrder = asyncHandler(async (req, res) => {
             name: productData.name,
             price: price, // Fetched from DB
             quantity: item.quantity,
-            image: productData.images[0] // Take the first image snapshot
+            image: productData.images[0].url // Take the first image snapshot
         };
     });
 
@@ -143,4 +143,90 @@ export const getMyOrders = asyncHandler(async (req, res) => {
         count: user.orderHistory.length,
         orders: user.orderHistory,
     });
+});
+export const cancelOrderItem = asyncHandler(async (req, res) => {
+  try {
+    const { orderId, productId } = req.params;
+    const userId = req.user.id; // From auth middleware
+
+    const order = await Order.findOne({ _id: orderId, user: userId });
+    
+    if (!order) return res.status(404).json({ message: "Order not found" });
+
+    const item = order.items.find(i => i.product.toString() === productId);
+    if (!item) return res.status(404).json({ message: "Item not found in order" });
+    // Logic: Cannot cancel if already Shipped or Delivered
+    if ([ 'Delivered',"Cancelled","Returned"].includes(item.status)) {
+      return res.status(400).json({ message: "Cannot cancel an item already shipped or delivered." });
+    }
+
+    item.status = 'Cancelled';
+    await order.save();
+
+    res.status(200).json({ success: true, message: "Item cancelled successfully." });
+  } catch (error) {
+    res.status(500).json({ message: "Cancellation failed", error: error.message });
+  }
+});
+export const requestItemReturn = asyncHandler(async (req, res) => {
+  const { orderId, productId } = req.params;
+  const { reason, description, images } = req.body; // Images are often required for defective items
+
+  // 1. Fetch Order
+  const order = await Order.findOne({ _id: orderId, user: req.user.id });
+  if (!order) return res.status(404).json({ message: "Order not found" });
+
+  // 2. Find specific Item in the Order
+  const item = order.items.find(i => i.product.toString() === productId);
+  if (!item) return res.status(404).json({ message: "Item not found in this order" });
+
+  // 3. Status & Window Validation
+  if (item.status !== 'Delivered') {
+    return res.status(400).json({ message: "Only delivered items can be returned." });
+  }
+
+  // Double check if already requested (prevent duplicate Return documents)
+  const existingReturn = await Return.findOne({ orderId, productId });
+  if (existingReturn) {
+    return res.status(400).json({ message: "A return request already exists for this item." });
+  }
+
+  // 4. Time Logic Calculation
+  // We fetch returnDays from the product if not already on the item
+  const product = await Product.findById(productId);
+  const returnDaysAllowed = product?.returnDays || 7;
+  
+  const deliveryDate = new Date(item.deliveredAt).getTime();
+  const now = Date.now();
+  const daysSinceDelivery = (now - deliveryDate) / (1000 * 60 * 60 * 24);
+
+  if (daysSinceDelivery > returnDaysAllowed) {
+    return res.status(400).json({ 
+      message: `Return window expired. It was valid for ${returnDaysAllowed} days after delivery.` 
+    });
+  }
+
+  // 5. Atomic Update
+  // We create the return record FIRST. If this fails, the order remains 'Delivered'
+  await Return.create({
+    orderId,
+    productId,
+    user: req.user.id,
+    reason,
+    description,
+    images: images || [], // URLs from Cloudinary/S3
+    returnStatus: 'Pending_Approval'
+  });
+
+  // Update the Item Status in the Order Document
+  // We use findOneAndUpdate to ensure the update is targeted correctly
+  await Order.updateOne(
+    { _id: orderId, "items.product": productId },
+    { $set: { "items.$.status": 'Return_Requested' } }
+  );
+
+  res.status(201).json({ 
+    success: true, 
+    message: "Return request logged in the asset ledger. Admin review pending." 
+  });
 });
