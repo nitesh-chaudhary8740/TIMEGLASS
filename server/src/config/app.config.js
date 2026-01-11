@@ -1,34 +1,47 @@
+/* eslint-disable no-unused-vars */
 import dotenv from 'dotenv';
 import env from '../constants/env.js';
 dotenv.config();
-//src/config/app.config.js
+
 // 1. CORS Options (Crucial for Cookies)
 export const corsOptions = {
-    origin: ['http://localhost:5173', 'http://localhost:5174','http://127.0.0.1:5173',"https://timeglass.vercel.app"], // Add all frontend URLs
-    credentials: true, // Required for cookies to pass through
-    methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
+    // Ensure no trailing slashes in URLs
+    origin: [
+        'http://localhost:5173', 
+        'http://localhost:5174',
+        'http://127.0.0.1:5173',
+        "https://timeglass.vercel.app"
+    ], 
+    credentials: true, 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 // 2. Cookie Options
 export const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+    // Production (Render/Vercel) requires secure: true and sameSite: 'none'
+    // This allows the browser to send cookies from Vercel to the Render API
+    secure: true, 
+    sameSite: 'none', 
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
 };
 
 // 3. Rate Limiter Options
 export const limiterOptions = {
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per window
+    windowMs: 15 * 60 * 1000, 
+    max: 100, 
+    standardHeaders: true, 
+    legacyHeaders: false,
+    // This prevents the 'X-Forwarded-For' error on Render
+    validate: { xForwardedForHeader: false }, 
     message: "Too many requests from this IP, please try again after 15 minutes"
 };
-export const cloudinaryOptions= {
 
-  cloud_name: env.CLOUDINARY_CLOUD_NAME,
-  api_key: env.CLOUDINARY_API_KEY,
-  api_secret: env.CLOUDINARY_API_SECRET,
-}
-// 4. Morgan Format
+export const cloudinaryOptions = {
+    cloud_name: env.CLOUDINARY_CLOUD_NAME,
+    api_key: env.CLOUDINARY_API_KEY,
+    api_secret: env.CLOUDINARY_API_SECRET,
+};
+
 export const morganFormat = process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
