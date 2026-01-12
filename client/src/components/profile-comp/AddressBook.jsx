@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Plus, MapPin, Trash2, Edit2, Home, Briefcase, Navigation, CheckCircle2, Globe } from 'lucide-react';
 import { useDeleteAddressMutation, useUpdateAddressMutation } from '../../app/features/api/userApiSlice.js';
 import AddressForm from './AddressForm.jsx';
+import { setCredentials } from '../../app/userSlice.js';
 
 const AddressBook = () => {
   const { user } = useSelector((state) => state.auth);
   const [showForm, setShowForm] = useState(false);
+  const dispatch = useDispatch()
   const [editingAddress, setEditingAddress] = useState(null);
   
   const [deleteAddress] = useDeleteAddressMutation();
@@ -22,7 +24,9 @@ const AddressBook = () => {
   const handleDelete = async (addressId) => {
     if (window.confirm("Are you sure you want to remove this address?")) {
       try {
-        await deleteAddress(addressId).unwrap();
+        await deleteAddress(addressId).unwrap().then(addAddressData=>{
+                  dispatch(setCredentials(addAddressData.user))
+                });;
       } catch (err) {
         console.error("Delete failed:", err);
       }

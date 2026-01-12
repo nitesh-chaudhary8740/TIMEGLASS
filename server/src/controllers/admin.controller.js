@@ -86,10 +86,11 @@ export const addProduct = async (req, res, next) => {
     const {
       name, price, description, tier, gender, movement,
       material, color, caseSize, stock, warrantyValue,
-      warrantyUnit, returnDays, status, shippingType, shippingCost
+      warrantyUnit, returnDays, status, shippingType, shippingCost,defaultImageIndex
     } = req.body;
 
     const files = req.files;
+  
     if (!files || files.length === 0) return res.status(400).json({ message: "Images required" });
 
     const cloudinaryResults = await Promise.all(files.map(file => uploadToCloudinary(file.buffer, name)));
@@ -111,7 +112,7 @@ export const addProduct = async (req, res, next) => {
       warranty: { value: Number(warrantyValue), unit: warrantyUnit },
       shipping: { type: shippingType, cost: Number(shippingCost) || 0 },
       images: imagesData,
-      defaultImage: imagesData[0], // Simplified default for now
+      defaultImage: imagesData[defaultImageIndex], // Simplified default for now
     });
     await product.save();
     res.status(201).json({ success: true, message: "Timepiece added" });

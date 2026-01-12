@@ -153,7 +153,7 @@ const Checkout = () => {
         {isManualAddress && (
           <div className="p-8 border-2 border-dashed border-gray-200 rounded-3xl bg-gray-50/30">
             <h3 className="text-[10px] font-black uppercase mb-6 text-amber-600">Manual Entry</h3>
-            <AddressForm onCancel={() => setIsManualAddress(false)} />
+            <AddressForm onCancel={() => setIsManualAddress(false)} setOrderData={setOrderData}/>
           </div>
         )}
 

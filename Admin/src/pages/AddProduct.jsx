@@ -12,6 +12,7 @@ const AddProduct = () => {
     name: '',
     price: '',
     description: '',
+
     tier: 'Standard',
     gender: 'Men',
     movement: 'Analog',

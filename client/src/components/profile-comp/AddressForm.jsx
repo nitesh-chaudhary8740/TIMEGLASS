@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useAddAddressMutation, useUpdateAddressMutation } from '../../app/features/api/userApiSlice.js';
 import { Loader2, MapPin, Navigation, CheckCircle2 } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../../app/userSlice.js';
+
 
 const AddressForm = ({ existingData, onCancel }) => {
-  const [addAddress, ] = useAddAddressMutation();
+const [addAddress ] = useAddAddressMutation();
   const [updateAddress, ] = useUpdateAddressMutation();
-  
+  // const { user } = useSelector(state => state.auth);
   const [status, setStatus] = useState({ loading: false, error: '', locating: false });
   const [areas, setAreas] = useState([]);
-
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     street: existingData?.street || '',
     city: existingData?.city || '',
@@ -30,7 +33,7 @@ const AddressForm = ({ existingData, onCancel }) => {
         // Reverse Geocode using OpenStreetMap (Free, No Key)
         const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
         const data = await res.json();
-        console.log(data)
+       
         const pin = data.address.postcode?.replace(/\s/g, '').substring(0, 6);
         
         setFormData(prev => ({
@@ -58,7 +61,7 @@ const AddressForm = ({ existingData, onCancel }) => {
         try {
           const res = await fetch(`https://api.postalpincode.in/pincode/${formData.postalCode}`);
           const data = await res.json();
-          console.log(data)
+          // console.log(data)
           if (data[0].Status === "Success") {
             setAreas(data[0].PostOffice);
             if (data[0].PostOffice.length === 1) {
@@ -83,7 +86,20 @@ const AddressForm = ({ existingData, onCancel }) => {
       if (existingData?._id) {
         await updateAddress({ addressId: existingData._id, data: formData }).unwrap();
       } else {
-        await addAddress(formData).unwrap();
+        // console.log(user,"user")
+        await addAddress(formData).unwrap().then(addAddressData=>{
+          dispatch(setCredentials(addAddressData.user))
+        });
+      //    setOrderData(prev => ({
+      // ...prev,
+      // selectedAddressId: addr._id,
+      // shippingAddress: {
+      //   street: addr.street,
+      //   city: addr.city,
+      //   state: addr.state,
+      //   postalCode: addr.postalCode
+      // }
+    // }));
       }
       onCancel();
     } catch (err) { console.error(err); }
