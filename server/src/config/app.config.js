@@ -23,6 +23,7 @@ export const cookieOptions = {
     // Production (Render/Vercel) requires secure: true and sameSite: 'none'
     // This allows the browser to send cookies from Vercel to the Render API
     secure: true, 
+    partitioned: true,
     sameSite: 'none', 
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
 };

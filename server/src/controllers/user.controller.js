@@ -159,7 +159,8 @@ export const logout = (req, res) => {
         httpOnly: true,
         expires: new Date(0), 
         // CRITICAL: These must match the settings used during login
-        secure: true,      
+        secure: true,
+        partitioned: true,      
         sameSite: 'none',  
     });
 
