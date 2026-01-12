@@ -154,11 +154,13 @@ export const googleAuth = async (req, res, next) => {
  * @route   POST /user/auth/logout
  */
 export const logout = (req, res) => {
+    // We clear the cookie by setting it to an empty string and expiring it
     res.cookie('token', '', {
         httpOnly: true,
-        expires: new Date(0), // Set expiry to the past to delete the cookie
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+        expires: new Date(0), 
+        // CRITICAL: These must match the settings used during login
+        secure: true,      
+        sameSite: 'none',  
     });
 
     res.status(200).json({ 
