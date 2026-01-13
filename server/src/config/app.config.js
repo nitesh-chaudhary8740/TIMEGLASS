@@ -10,7 +10,8 @@ export const corsOptions = {
         'http://localhost:5173', 
         'http://localhost:5174',
         'http://127.0.0.1:5173',
-        "https://timeglass.vercel.app"
+        "https://timeglass.vercel.app",
+        "https://timeglass-admin.vercel.app"
     ], 
     credentials: true, 
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
