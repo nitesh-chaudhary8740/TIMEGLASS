@@ -3,15 +3,13 @@ import env from '../constants/env.js';
 import ErrorResponse from '../utils/errorResponse.util.js';
 
 export const verifyAnyToken = (req, res, next) => {
-    // Determine source: localhost:5174 is Admin, 5173 is User
-    const origin = req.headers.origin || req.headers.referer || "";
-    const isAdminApp = origin.includes('5174');
+
 
     // Pick the cookie that matches the App
-    const token = isAdminApp ? req.cookies.adminToken : req.cookies.token;
+    const token = req.cookies.adminToken || req.cookies.token;
 
     if (!token) {
-        return next(new ErrorResponse(`Access denied. Please log in as ${isAdminApp ? 'Admin' : 'User'}.`, 401));
+        return next(new ErrorResponse(`Access denied. Please log in as ${token ? 'Admin' : 'User'}.`, 401));
     }
 
     try {
@@ -20,7 +18,7 @@ export const verifyAnyToken = (req, res, next) => {
         // Inject identity info
         req.user = {
             id: decoded.id || decoded._id, // Support both formats
-            role: isAdminApp ? 'admin' : 'user' 
+            role: req.cookies.adminToken ? 'admin' : 'user' 
         };
         
         next();
