@@ -9,6 +9,7 @@ import { deleteFromCloudinary } from "../utils/cloudinary.util.js";
 import Transaction from "../models/transaction.model.js";
 import Order from "../models/order.model.js";
 import User from "../models/user.model.js";
+import { cookieOptions } from "../config/app.config.js";
 
 export const adminLogin = async (req, res) => {
 
@@ -38,12 +39,7 @@ export const adminLogin = async (req, res) => {
 
   // Set cookie options
  
-  const cookieOptions = {
-    httpOnly: true, // Prevents JS access (XSS protection)
-    secure: process.env.NODE_ENV === "production", // Only over HTTPS in prod
-    sameSite: "Strict", // CSRF protection
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
-  };
+
 
   res
     .cookie("adminToken", token, cookieOptions)
@@ -56,11 +52,7 @@ export const adminLogin = async (req, res) => {
 };
 export const adminLogout = (req, res) => {
   try {
-    res.clearCookie("adminToken", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-    });
+    res.clearCookie("adminToken", cookieOptions);
 
     return res.status(200).json({
       success: true,
