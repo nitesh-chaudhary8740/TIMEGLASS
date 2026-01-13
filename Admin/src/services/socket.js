@@ -12,13 +12,16 @@ class SocketService {
 
     console.log("Initializing Socket Instance...");
     
-    this.socket = io("http://localhost:8081", {
-      transports: ["websocket"],
-      reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 5000, 
-      autoConnect: true
-    });
+this.socket = io("https://timeglass.onrender.com", {
+    // CRITICAL: Must be true to send cookies for auth
+    withCredentials: true, 
+    // Allow polling first, then upgrade to websocket for better reliability
+    transports: ["polling", "websocket"], 
+    reconnection: true,
+    reconnectionAttempts: 5,
+    reconnectionDelay: 5000, 
+    autoConnect: true
+  });
 
     this.socket.on("connect", () => {
       console.log("✅ Connected:", this.socket.id);
