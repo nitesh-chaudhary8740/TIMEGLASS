@@ -97,7 +97,7 @@ const finalizeLogin = async (userData) => {
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-6 relative font-['Poppins']">
-      <button onClick={() => navigate(-1)} className="absolute top-10 right-10 p-2 text-gray-400 hover:text-black transition-colors">
+      <button onClick={() => navigate("/products")} className="absolute top-10 right-10 p-2 text-gray-400 hover:text-black transition-colors">
         <X size={24} />
       </button>
 

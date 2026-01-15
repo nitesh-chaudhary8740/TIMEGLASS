@@ -12,7 +12,6 @@ const AddProduct = () => {
     name: '',
     price: '',
     description: '',
-
     tier: 'Standard',
     gender: 'Men',
     movement: 'Analog',
@@ -83,7 +82,7 @@ const AddProduct = () => {
         <div className="lg:col-span-2 space-y-8">
           
           {/* Section 1: Identity */}
-          <section className="bg-white p-8 rounded-[2rem] border border-zinc-100 shadow-sm space-y-6">
+          <section className="bg-white p-8 rounded-4xl border border-zinc-100 shadow-sm space-y-6">
             <h3 className="font-black flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-zinc-400">
               <Package size={16} /> Identity & Pricing
             </h3>

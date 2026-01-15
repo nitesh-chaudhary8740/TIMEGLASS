@@ -1,0 +1,52 @@
+In simple terms, **Helmet.js** is a collection of 11 smaller middleware functions that set **HTTP response headers** to secure your Express app.
+
+When a browser (like Chrome) talks to your server, the server sends back "headers"—hidden instructions that tell the browser how to behave. By default, Express reveals sensitive information and allows certain risky behaviors. Helmet fixes this.
+
+---
+
+### The 3 Most Important Things Helmet Does:
+
+#### 1. Hiding Your Identity (`x-powered-by`)
+
+By default, Express tells the world: *"Hi, I am a server running on Express."* Hackers use this to look for version-specific bugs. Helmet removes this header so attackers don't know what technology you are using.
+
+#### 2. Preventing XSS (`Content-Security-Policy`)
+
+This is the most powerful part of Helmet. It sets a **CSP (Content Security Policy)**.
+
+* **Without Helmet:** A hacker could inject a malicious `<script>` into your "TimeGlass" review section. The browser would run it and potentially steal the user's login cookie.
+* **With Helmet:** The header tells the browser: *"Only execute scripts that come from my own domain (timeglass.vercel.app)."* The browser will block the hacker's script.
+
+#### 3. Preventing Clickjacking (`X-Frame-Options`)
+
+Clickjacking is when a hacker puts your website (like your "TaskFlow" app) inside a transparent `<iframe>` on their own site. They trick users into clicking a button on your app while they think they are clicking something else.
+Helmet sets headers that tell the browser: *"Do not allow this site to be put in an iframe."*
+
+---
+
+### How it looks in your Code
+
+Since you have it on your resume, you likely implemented it like this in your `server.js` or `app.js`:
+
+```javascript
+const express = require('express');
+const helmet = require('helmet');
+
+const app = express();
+
+// This one line enables 11 different security headers
+app.use(helmet()); 
+
+```
+
+### Why recruiters love seeing this:
+
+Most beginner developers only focus on the "Happy Path" (making features work). By including **Helmet.js** and **Rate-Limiters** in your **Technical Expertise**, you are signaling that you are a **Production-Ready** developer who thinks about:
+
+1. **Security** (Protecting user data)
+2. **Compliance** (Following industry standards)
+3. **Server Health** (Preventing crashes)
+
+---
+
+**Would you like me to give you a "Cheat Sheet" of 3-4 security questions about Helmet and JWT that interviewers usually ask for MERN roles?**
